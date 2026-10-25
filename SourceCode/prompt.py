@@ -2,20 +2,30 @@ import os
 import json
 import numpy as np
 
+from pathlib import Path
+from configparser import ConfigParser
+
 # ====================== Path Configuration ======================
+
+# get path to outputs
+cnfg = ConfigParser()
+cnfg.read('config.ini')
+DATA_PATH = Path(cnfg['data']['YUMCD_data_path'])
+OUTPUT_PATH = Path(cnfg['output']['outputs_path'])
+
 # Hand-crafted features (.npy)
-HANDCRAFT_NPY = "./output/handcrafted_features.npy"
+HANDCRAFT_NPY = OUTPUT_PATH  / 'case5' / 'k7' / 'all6' / 'handcrafted_features_all6.npy'
 
 # AE cluster labels (.npy)
-AE_CLUSTER_NPY = "./output/kmeans_labels_k7.npy"
+AE_CLUSTER_NPY = OUTPUT_PATH / 'test_clustering' / 'kmeans_labels.npy'
 
 # file_list.txt (optional, used for cluster purity check)
 FILE_LIST_TXT = "./output/file_list.txt"
 
 # Output directory
-OUTPUT_DIR = "./output"
-SUMMARY_JSON = os.path.join(OUTPUT_DIR, "cluster_summaries_ae_on_handcrafted.json")
-SUMMARY_TXT = os.path.join(OUTPUT_DIR, "cluster_summaries_for_llm.txt")
+OUTPUT_DIR = OUTPUT_PATH / 'cluster_information'
+SUMMARY_JSON = OUTPUT_DIR / 'cluster_summaries_ae_on_handcrafted.json'
+SUMMARY_TXT = OUTPUT_DIR / 'cluster_summaries_for_llm.txt'
 # ======================================================
 
 

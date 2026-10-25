@@ -3,6 +3,9 @@ import json
 import numpy as np
 from glob import glob
 
+from pathlib import Path
+from configparser import ConfigParser
+
 # ===================== Feature Configuration =====================
 
 # Always use all 6 features: [0, 1, 2, 3, 4, 5]
@@ -12,16 +15,21 @@ TAG = "all6"  # used as a suffix for output file names
 
 # ===================== Data and Output Paths =====================
 
-# Two normalized data folders
-DATA_DIRS = ["./data"]
+# get path to train/test tensors and outputs
+cnfg = ConfigParser()
+cnfg.read('config.ini')
+DATA_PATH = Path(cnfg['data']['YUMCD_data_path'])
+OUTPUT_PATH = Path(cnfg['output']['outputs_path'])
 
-BASE_OUTPUT_DIR = "./output/case5/k7"
-OUTPUT_DIR = os.path.join(BASE_OUTPUT_DIR, TAG)
+# Two normalized data folders
+DATA_DIRS = [DATA_PATH / 'test']
+
+BASE_OUTPUT_DIR = OUTPUT_PATH / 'case5' / 'k7'
+OUTPUT_DIR = BASE_OUTPUT_DIR / TAG
 
 # Paths for merged features and scene IDs
-OUTPUT_FEATURE_NPY = os.path.join(OUTPUT_DIR, f"handcrafted_features_{TAG}.npy")
-OUTPUT_SCENE_ID_NPY = os.path.join(OUTPUT_DIR, f"scene_ids_{TAG}.npy")
-
+OUTPUT_FEATURE_NPY = OUTPUT_DIR / f"handcrafted_features_{TAG}.npy"
+OUTPUT_SCENE_ID_NPY = OUTPUT_DIR / f"scene_ids_{TAG}.npy"
 
 def extract_handcrafted_features(sample_matrix: np.ndarray,
                                  feature_indices: list) -> np.ndarray:

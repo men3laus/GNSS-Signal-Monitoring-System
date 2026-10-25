@@ -3,10 +3,19 @@ from pathlib import Path
 import numpy as np
 import joblib
 
-KMEANS_LABEL_NPY = Path("outputs/test_clustering/kmeans_labels_k9.npy")
-LLM_OUTPUT_TXT = Path("outputs/llm/llm_output.txt")
+from pathlib import Path
+from configparser import ConfigParser
 
-GMM_OUT_DIR = Path("outputs/gmm_out")
+# get path to outputs
+cnfg = ConfigParser()
+cnfg.read('config.ini')
+DATA_PATH = Path(cnfg['data']['YUMCD_data_path'])
+OUTPUT_PATH = Path(cnfg['output']['outputs_path'])
+
+KMEANS_LABEL_NPY = OUTPUT_PATH / 'test_clustering' / 'kmeans_labels.npy'
+LLM_OUTPUT_TXT = OUTPUT_PATH / 'llm' / 'llm_output.txt'
+
+GMM_OUT_DIR = OUTPUT_PATH / 'gmm_out'
 GMM_PKL = GMM_OUT_DIR / "gmm.pkl"
 SCALER_PKL = GMM_OUT_DIR / "latent_scaler.pkl"
 PCA_PKL = GMM_OUT_DIR / "pca.pkl"  
@@ -16,7 +25,7 @@ Z_TEST_NPY = GMM_OUT_DIR / "z_test.npy"
 Z_TRAIN_PCA_NPY = GMM_OUT_DIR / "z_train_pca.npy" 
 Z_TEST_PCA_NPY = GMM_OUT_DIR / "z_test_pca.npy"    
 
-OUT_TXT = Path("outputs/fusion/fused_results.jsonl")
+OUT_TXT = OUTPUT_PATH / 'fusion' / 'fused_results.jsonl'
 
 EPS = 1e-12
 CALIB_Q_LOW = 0.9

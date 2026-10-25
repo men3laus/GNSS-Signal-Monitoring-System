@@ -17,10 +17,17 @@ from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score
 import pandas as pd
 
-MODEL_PATH = Path("outputs/cnn_ae.pth")
-TEST_DIRS = Path("data/test")
+from configparser import ConfigParser
 
-OUTPUT_DIR = Path("outputs/test_clustering")
+# get path to train/test tensors, as well as the autoencoder
+cnfg = ConfigParser()
+cnfg.read('config.ini')
+DATA_PATH = Path(cnfg['data']['YUMCD_data_path'])
+OUTPUT_PATH = Path(cnfg['output']['outputs_path'])
+
+MODEL_PATH = OUTPUT_PATH / 'cnn_ae.pth'
+TEST_DIRS = DATA_PATH / 'test'
+OUTPUT_DIR = OUTPUT_PATH / 'test_clustering'
 
 LATENT_DIM = 128
 BATCH_SIZE = 64
@@ -286,9 +293,9 @@ def cluster_and_visualize(latents: np.ndarray, n_clusters: int):
     kmeans = KMeans(n_clusters=n_clusters, random_state=RANDOM_STATE, n_init="auto")
     labels = kmeans.fit_predict(X_std)
 
-    label_npy = OUTPUT_DIR / f"kmeans_labels_k{n_clusters}.npy"
-    centers_npy = OUTPUT_DIR / f"kmeans_centers_k{n_clusters}.npy"
-    pca_fig = OUTPUT_DIR / f"kmeans_k{n_clusters}_PCA.png"
+    label_npy = OUTPUT_DIR / f"kmeans_labels.npy"
+    centers_npy = OUTPUT_DIR / f"kmeans_centers.npy"
+    pca_fig = OUTPUT_DIR / f"kmeans_PCA.png"
 
     np.save(label_npy, labels)
     np.save(centers_npy, kmeans.cluster_centers_)

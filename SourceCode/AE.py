@@ -10,9 +10,17 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 
-TRAIN_DIR = Path("data/train")      
-OUTPUT_DIR = Path("outputs")
-MODEL_PATH = OUTPUT_DIR / "cnn_ae.pth"
+from configparser import ConfigParser
+
+# get path to train/test tensors
+cnfg = ConfigParser()
+cnfg.read('config.ini')
+DATA_PATH = Path(cnfg['data']['YUMCD_data_path'])
+OUTPUT_PATH = Path(cnfg['output']['outputs_path'])
+
+TRAIN_DIR = DATA_PATH / 'train'
+MODEL_PATH = OUTPUT_PATH / 'cnn_ae.pth'
+OUTPUT_DIR = OUTPUT_PATH
 
 LATENT_DIM = 128
 BATCH_SIZE = 64
@@ -21,7 +29,7 @@ LR = 1e-3
 
 SEED = 42
 USE_CHANNEL_ATTENTION = True
-REUSE_TRAINED_AE = True
+REUSE_TRAINED_AE = False
 
 def set_global_seed(seed: int) -> None:
     os.environ["PYTHONHASHSEED"] = str(seed)

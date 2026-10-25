@@ -17,12 +17,19 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.mixture import GaussianMixture
 import joblib
 
-AE_MODEL_PATH = Path("outputs/cnn_ae.pth")
+from configparser import ConfigParser
 
-TRAIN_DIR = Path("data/gmm_train")   
-TEST_DIR  = Path("data/gmm_test")    
+# get path to train/test tensors, as well as the autoencoder
+cnfg = ConfigParser()
+cnfg.read('config.ini')
+DATA_PATH = Path(cnfg['data']['YUMCD_data_path'])
+OUTPUT_PATH = Path(cnfg['output']['outputs_path'])
 
-OUTPUT_DIR = Path("outputs/gmm_out")
+TRAIN_DIR = DATA_PATH / 'train'
+TEST_DIR = DATA_PATH / 'test'
+AE_MODEL_PATH = OUTPUT_PATH / 'cnn_ae.pth'
+
+OUTPUT_DIR = OUTPUT_PATH / 'gmm_out'
 
 LATENT_DIM = 128
 BATCH_SIZE = 64
