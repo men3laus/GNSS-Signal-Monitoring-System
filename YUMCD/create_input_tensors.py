@@ -8,6 +8,11 @@ cnfg.read('config.ini')
 yumcd_data_path = Path(cnfg['data']['YUMCD_data_path'])
 processed_data_path = yumcd_data_path / '1221' / 'Processed data'
 
+# get normalization scalars
+Dopp_norm = int(cnfg['feature_normalization']['DOPPLER_SHIFT_NORMALIZATION_SCALAR'])
+pRange_norm = int(cnfg['feature_normalization']['PSEUDORANGE_NORMALIZATION_SCALAR'])
+pReRange_norm = int(cnfg['feature_normalization']['PSEUDORANGE_RES_NORMALIZATION_SCALAR'])
+
 tensor = 0
 train_data_path = yumcd_data_path / 'train'
 test_data_path = yumcd_data_path / 'test'
@@ -33,6 +38,7 @@ with (
         for satll_idx in range(32):
             features = []
 
+            # Carrier-over-Noise ration and its temporal statistics
             features.append(observation_dict['cn0_G1'][time_idx][satll_idx])
 
             mean = 0; mean_cnt = 0
@@ -53,9 +59,16 @@ with (
                 var /= var_cnt
             features.append(var)
             
-            features.append(observation_dict['cpMes_G1'][time_idx][satll_idx]) # NOTE: swap
-            features.append(observation_dict['prMes_G1'][time_idx][satll_idx])
-            features.append(satellite_dict['prRes_G'][time_idx][satll_idx])
+            # Doppler shift, pseudorange, and pseudorange residual
+            features.append(
+                observation_dict['cpMes_G1'][time_idx][satll_idx] / Dopp_norm
+            ) # NOTE: swap
+            features.append(
+                observation_dict['prMes_G1'][time_idx][satll_idx] / pRange_norm
+            )
+            features.append(
+                satellite_dict['prRes_G'][time_idx][satll_idx] / pReRange_norm
+            )
             
             tensor_temp.append(features)
 

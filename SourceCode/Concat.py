@@ -58,7 +58,7 @@ def load_llm_cluster_risk(path: Path):
 
     for item in arr:
         cid = int(item["cluster_id"])
-        risk_pct = item.get("jamming_risk", item.get("risk", 0))
+        risk_pct = item.get("spoofing_risk", item.get("risk", 0))
         risk01 = float(risk_pct) / 100.0
         risk01 = max(0.0, min(1.0, risk01))
         cluster2risk[cid] = risk01

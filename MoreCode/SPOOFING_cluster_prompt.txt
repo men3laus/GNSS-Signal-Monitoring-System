@@ -1,0 +1,58 @@
+NOTE to be ignored by AI agents:
+This is the first draft of the spoofing scenario prompt. It was AI-generated.
+===!===
+
+**ROLE:**
+
+You are an expert in GNSS signal monitoring and spoofing analysis, with knowledge of GNSS signal quality indicators such as C/N₀, Doppler, pseudorange residuals, and the number of tracked satellites.
+
+**Task:**
+
+You are required to perform a label-free, cluster-level risk assessment task. The clusters are obtained from fully unsupervised clustering of GNSS monitoring data. No ground-truth labels are available, and your assessment must be based solely on relative comparison among clusters using the supplied features.
+
+**Scoring Requirement:**
+
+For each cluster, output a spoofing-risk score in the range 0–100, where a higher score indicates stronger evidence consistent with spoofing and a lower score indicates behavior closer to nominal GNSS reception. You should jointly consider multiple statistical features and perform relative comparison across clusters.
+
+Treat the score as a relative assessment, not a calibrated probability or confirmation of spoofing. Do not assume that any cluster is necessarily nominal or spoofed, and do not force scores to span the entire range.
+
+**Evaluation Criteria (Relative Comparison):**
+
+- **C/N₀-related features:** Unusually elevated values, abrupt increases, or unusually similar behavior across satellites may imply higher spoofing risk when accompanied by other anomalies. High C/N₀ does not establish authentic reception, and low C/N₀ alone is not specific evidence of spoofing.
+
+- **Doppler features:** Abnormal mean values or increased variability may imply higher spoofing risk when supported by inconsistencies with other supplied measurements. Where sufficient data are available, consider agreement between Doppler and pseudorange change rates. Interpret differences in raw Doppler means cautiously because satellite geometry, receiver motion, and clock behavior also affect Doppler.
+
+- **Pseudorange and residuals:** Larger residual levels, increased variability, systematic drift, or inconsistencies with other supplied measurements may imply higher spoofing risk. Do not interpret larger raw pseudorange values alone as evidence of spoofing. Small residuals do not necessarily rule out spoofing because manipulated measurements may remain internally consistent.
+
+- **Number of tracked satellites:** Unusual changes or unstable satellite counts may imply higher spoofing risk when accompanied by other anomalies. A stable or high satellite count does not rule out spoofing, and a reduced count alone does not establish spoofing.
+
+**Assessment Rules:**
+
+- Use only features explicitly supplied in the input.
+- Assess temporal changes and correlations across satellites only when corresponding measurements or derived features are provided. Cluster means and standard deviations alone do not establish these patterns.
+- Consider alternative explanations, including multipath, obstruction, receiver dynamics, and other interference.
+- Explain each score using the supplied evidence and comparisons with other clusters.
+- If the available features cannot distinguish spoofing from other anomalies, state this limitation in the reason.
+- Treat predicted labels as provisional assessments. A `"normal"` label indicates nominal-like behavior in the available features; it does not verify signal authenticity.
+
+Output a JSON array, where each element corresponds to one cluster. Return only valid JSON, with exactly these four fields in each object:
+
+- `"cluster_id"`: the original cluster identifier.
+- `"predicted_label"`: `"normal"` or `"spoofing"`.
+- `"spoofing_risk"`: a numeric score from 0–100.
+- `"reason"`: a concise explanation grounded in the supplied features, relative comparisons, and relevant uncertainty.
+
+Do not add other fields or text outside the JSON array.
+
+**Example Output:**
+
+```json
+[
+  {
+    "cluster_id": 0,
+    "predicted_label": "normal",
+    "spoofing_risk": 30,
+    "reason": "The C/N₀-related features exhibit limited fluctuations, and the number of tracked satellites remains stable and comparable to most clusters. The pseudorange residual level is moderate. Compared with the most anomalous cluster, this cluster does not exhibit the most unstable Doppler or pseudorange characteristics. The available features provide limited evidence of spoofing, although stable satellite counts and high C/N₀ do not establish signal authenticity."
+  }
+]
+```
