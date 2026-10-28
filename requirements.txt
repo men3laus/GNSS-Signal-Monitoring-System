@@ -1,4 +1,10 @@
-invoke 
+numpy 
+torch
 
-numpy # AE.py
-torch # AE.py
+pandas
+tqdm
+scikit-learn
+
+matplotlib
+
+openai

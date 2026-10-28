@@ -26,7 +26,7 @@ DATA_PATH = Path(cnfg['data']['YUMCD_data_path'])
 OUTPUT_PATH = Path(cnfg['output']['outputs_path'])
 
 MODEL_PATH = OUTPUT_PATH / 'cnn_ae.pth'
-TEST_DIRS = DATA_PATH / 'test'
+TEST_DIRS = [DATA_PATH / 'test']
 OUTPUT_DIR = OUTPUT_PATH / 'test_clustering'
 
 LATENT_DIM = 128
