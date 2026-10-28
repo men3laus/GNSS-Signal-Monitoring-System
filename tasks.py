@@ -41,3 +41,5 @@ def runPipelineWithYUMCD(cxt):
     cxt.run(f"{venv_Python_path} SourceCode/kNN.py")
     cxt.run(f"{venv_Python_path} SourceCode/feature.py")
     cxt.run(f"{venv_Python_path} SourceCode/prompt.py")
+    cxt.run(f"{venv_Python_path} MoreCode/semantic_assessment.py")
+    cxt.run(f"{venv_Python_path} SourceCode/Concat.py")

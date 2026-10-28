@@ -1,0 +1,21 @@
+[data]
+; where to look for the '1221' folder extracted from Part III of the YUMCD
+; will be reused for created test/training data
+; TAKES A SIMPLE STRING WITH NO QUOTES; example below assumes '1221' is in './data/'
+YUMCD_data_path = data
+
+[output]
+; where to save the autoencoder, as well as the M-component GMM
+; SEE [data] for how to complete this field
+outputs_path = outputs
+
+[keys]
+; API keys
+OPENAI_API_key = [COMPLETE_THIS]
+
+[feature_normalization]
+; NORMALIZATION SCALARS FOR FEATURES OF TENSORS DERIVED FROM YUMCD
+; THESE ARE SAMPLE SUGGESTED VALUES. CHANGE THEM AS DESIRED (NON-ZERO)
+DOPPLER_SHIFT_NORMALIZATION_SCALAR = 100
+PSEUDORANGE_NORMALIZATION_SCALAR = 1000000000000
+PSEUDORANGE_RES_NORMALIZATION_SCALAR = 100
