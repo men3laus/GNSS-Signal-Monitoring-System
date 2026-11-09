@@ -18,7 +18,7 @@ TAG = "all6"  # used as a suffix for output file names
 # get path to train/test tensors and outputs
 cnfg = ConfigParser()
 cnfg.read('config.ini')
-DATA_PATH = Path(cnfg['data']['YUMCD_data_path'])
+DATA_PATH = Path(cnfg['data']['Tensors_data_path'])
 OUTPUT_PATH = Path(cnfg['output']['outputs_path'])
 
 # Two normalized data folders

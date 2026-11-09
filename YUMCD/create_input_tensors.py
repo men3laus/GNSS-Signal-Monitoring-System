@@ -7,6 +7,7 @@ cnfg = ConfigParser()
 cnfg.read('config.ini') 
 yumcd_data_path = Path(cnfg['data']['YUMCD_data_path'])
 processed_data_path = yumcd_data_path / '1221' / 'Processed data'
+tensors_data_path = Path(cnfg['data']['Tensors_data_path'])
 
 # get normalization scalars
 Dopp_norm = int(cnfg['feature_normalization']['DOPPLER_SHIFT_NORMALIZATION_SCALAR'])
@@ -14,8 +15,8 @@ pRange_norm = int(cnfg['feature_normalization']['PSEUDORANGE_NORMALIZATION_SCALA
 pReRange_norm = int(cnfg['feature_normalization']['PSEUDORANGE_RES_NORMALIZATION_SCALAR'])
 
 tensor = 0
-train_data_path = yumcd_data_path / 'train'
-test_data_path = yumcd_data_path / 'test'
+train_data_path = tensors_data_path / 'train'
+test_data_path = tensors_data_path / 'test'
 train_data_path.mkdir(exist_ok = True)
 test_data_path.mkdir(exist_ok = True)
 

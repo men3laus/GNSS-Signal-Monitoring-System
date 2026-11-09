@@ -9,7 +9,7 @@ from configparser import ConfigParser
 # get path to outputs
 cnfg = ConfigParser()
 cnfg.read('config.ini')
-DATA_PATH = Path(cnfg['data']['YUMCD_data_path'])
+DATA_PATH = Path(cnfg['data']['Tensors_data_path'])
 OUTPUT_PATH = Path(cnfg['output']['outputs_path'])
 
 KMEANS_LABEL_NPY = OUTPUT_PATH / 'test_clustering' / 'kmeans_labels.npy'

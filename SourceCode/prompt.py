@@ -10,7 +10,7 @@ from configparser import ConfigParser
 # get path to outputs
 cnfg = ConfigParser()
 cnfg.read('config.ini')
-DATA_PATH = Path(cnfg['data']['YUMCD_data_path'])
+DATA_PATH = Path(cnfg['data']['Tensors_data_path'])
 OUTPUT_PATH = Path(cnfg['output']['outputs_path'])
 
 # Hand-crafted features (.npy)
@@ -20,7 +20,7 @@ HANDCRAFT_NPY = OUTPUT_PATH  / 'case5' / 'k7' / 'all6' / 'handcrafted_features_a
 AE_CLUSTER_NPY = OUTPUT_PATH / 'test_clustering' / 'kmeans_labels.npy'
 
 # file_list.txt (optional, used for cluster purity check)
-FILE_LIST_TXT = "./output/file_list.txt"
+FILE_LIST_TXT = OUTPUT_PATH / 'test_clustering' / 'file_list.txt*'
 
 # Output directory
 OUTPUT_DIR = OUTPUT_PATH / 'cluster_information'

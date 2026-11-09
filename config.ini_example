@@ -1,8 +1,11 @@
 [data]
+; EVERYTHING HERE HAS TO BE A SIMPLE STRING WITH NO QUOTES; for example, below, it's determined that '1221' is in './data/'
 ; where to look for the '1221' folder extracted from Part III of the YUMCD
-; will be reused for created test/training data
-; TAKES A SIMPLE STRING WITH NO QUOTES; example below assumes '1221' is in './data/'
 YUMCD_data_path = data
+; where to download the 'processed' folder offered within TEXBAT
+TEXBAT_data_path = data
+; where to create test/training data
+Tensors_data_path = data
 
 [output]
 ; where to save the autoencoder, as well as the M-component GMM

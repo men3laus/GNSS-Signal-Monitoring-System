@@ -15,12 +15,12 @@ with open('venvPython_path.txt', 'r') as file:
 # get path to train/test tensors
 cnfg = ConfigParser()
 cnfg.read('config.ini')
-DATA_PATH = Path(cnfg['data']['YUMCD_data_path'])
+DATA_PATH = Path(cnfg['data']['Tensors_data_path'])
 OUTPUT_PATH = Path(cnfg['output']['outputs_path'])
 
 # TEMPORARY
 @task
-# delete runtime artifacts
+# delete ALL runtime artifacts
 def clear(cxt):
     # created tensors
     shutil.rmtree(DATA_PATH / 'train', ignore_errors = True)
@@ -34,7 +34,20 @@ def clear(cxt):
     shutil.rmtree('.venv')
 
 @task
+# only delete pipeline artifacts, keep /.venv
+def clearPipeline(cxt):
+    # created tensors
+    shutil.rmtree(DATA_PATH / 'train', ignore_errors = True)
+    shutil.rmtree(DATA_PATH / 'test', ignore_errors = True)
+    
+    # outputs
+    shutil.rmtree(OUTPUT_PATH, ignore_errors = True)
+
+@task
 def runPipelineWithYUMCD(cxt):
+    # clean slate
+    cxt.run("inv clearPipeline")
+
     cxt.run(f"{venv_Python_path} YUMCD/create_input_tensors.py")
     cxt.run(f"{venv_Python_path} SourceCode/AE.py")
     cxt.run(f"{venv_Python_path} SourceCode/GMM.py")

@@ -22,7 +22,7 @@ from configparser import ConfigParser
 # get path to train/test tensors, as well as the autoencoder
 cnfg = ConfigParser()
 cnfg.read('config.ini')
-DATA_PATH = Path(cnfg['data']['YUMCD_data_path'])
+DATA_PATH = Path(cnfg['data']['Tensors_data_path'])
 OUTPUT_PATH = Path(cnfg['output']['outputs_path'])
 
 TRAIN_DIR = DATA_PATH / 'train'
