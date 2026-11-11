@@ -1,5 +1,7 @@
+; EVERYTHING HERE HAS TO BE A SIMPLE STRING WITH NO QUOTES
+
 [data]
-; EVERYTHING HERE HAS TO BE A SIMPLE STRING WITH NO QUOTES; for example, below, it's determined that '1221' is in './data/'
+; for example, below, it's determined that '1221' is in './data/'
 ; where to look for the '1221' folder extracted from Part III of the YUMCD
 YUMCD_data_path = data
 ; where to download the 'processed' folder offered within TEXBAT
@@ -22,3 +24,8 @@ OPENAI_API_key = [COMPLETE_THIS]
 DOPPLER_SHIFT_NORMALIZATION_SCALAR = 100
 PSEUDORANGE_NORMALIZATION_SCALAR = 1000000000000
 PSEUDORANGE_RES_NORMALIZATION_SCALAR = 100
+
+[authentication]
+; Earthdata Login account is required
+EARTHDATA_LOGIN_USERNAME = [COMPLETE_THIS]
+EARTHDATA_LOGIN_PASSWORD = [COMPLETE_THIS]

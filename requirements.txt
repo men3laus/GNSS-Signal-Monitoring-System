@@ -1,10 +1,11 @@
+invoke
 numpy 
 torch
-
 pandas
 tqdm
 scikit-learn
-
 matplotlib
-
 openai
+requests
+scipy
+unlzw3
