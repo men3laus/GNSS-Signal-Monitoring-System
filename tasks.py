@@ -87,11 +87,11 @@ def runPipelineWithYUMCD(cxt):
 @task
 def installTEXBAT(cxt):    
     # define which scenarios present within the (cloud) 'processed' folder we're interested in
-    scenarios = ['ds2', 'ds3']
+    scenarios = ['ds2']
     
     # define which files we want from each scenario present within the (cloud) 'processed' folder
     target_files = [
-        'channel.mat'
+        'channel.mat', 'navsol.mat'
     ]
 
     # define which days' ephemeris data we want to pull from CDDIS; format is DDD
@@ -124,17 +124,26 @@ def installTEXBAT(cxt):
         (CDDIS_PATH / day).mkdir(parents = True, exist_ok = True)
         filename = f'brdc{day}0.12n.Z'
 
-        # retrieve file; first request will redirect us to the Earthdata login portal
+        # retrieve file
         print(f"Retrieving {CDDIS_2012_URL[8:]}{day}/12n/{filename}")
         response1 = login_session.get(CDDIS_2012_URL + day + '/' + '12n/' + filename)
         response1.raise_for_status()
-        redirect_url = response1.url
-        response2 = login_session.get(redirect_url)
-        response2.raise_for_status()
 
+        # check if request got redirected to the Earthdata login portal
+        redirect_flag = False
+        for response in response1.history:
+            if response.status_code == 302:
+                redirect_flag = True
+                break
+        if redirect_flag:
+            response2 = login_session.get(response1.url)
+            response2.raise_for_status()
+            compressed_data = response2.content
+        else:
+            compressed_data = response1.content
+        
         # decompress and log daily data
-        decompressed_data = unlzw(response2.content)
+        decompressed_data = unlzw(compressed_data)
         with open(CDDIS_PATH / day / filename[:len(filename)-2], 'wb') as file:
             file.write(decompressed_data)
        
- 
